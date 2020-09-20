@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, reactive, computed, watchEffect } from 'vue';
 
 export default {
   setup() {
@@ -41,8 +41,19 @@ export default {
        return count.value + numbers.a + numbers.b
     })
 
-    watch(numbers, (newVal) => {
-        console.log(newVal.a, newVal.b)
+    // // when any of the values changes
+    //
+    // watch(numbers, (newVal) => {
+    //     console.log(newVal.a, newVal.b)
+    // }, {
+    //     // the flag that would call if one more time
+    //     immediate: true
+    // })
+
+    // Vue will figure out what object to watch
+
+    watchEffect(() => {
+        console.log(numbers.a)
     })
 
     return {
