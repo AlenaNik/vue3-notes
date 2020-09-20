@@ -1,32 +1,29 @@
 <template>
     <div>
         <p> Count: {{ count }} </p>
-        <p> A. {{ numbers.a }} </p>
-        <p> B: {{ numbers.b }} </p>
+        <p> A. {{ a }} </p>
+        <p> B: {{ b }} </p>
         <p> Total : {{ total }} </p>
-      <button @click="increase('a')">Increase a</button>
-      <button @click="increase('b')">Increase b</button>
+      <button @click="a++">Increase a</button>
+      <button @click="b++">Increase b</button>
       <button @click="increment"> + </button>
       <button @click="decrement"> - </button>
+      <div v-for="msg in history" :key="msg">
+          {{ msg }}
+      </div>
     </div>
 </template>
 
 <script>
-import { ref, reactive, computed, watchEffect } from 'vue';
+import { ref, watch } from 'vue';
 
 export default {
   setup() {
     // for a single value / number
     const count = ref(0)
-    // for complex objects / values
-    const numbers = reactive({
-      a: 0,
-      b: 0
-    })
-
-    const increase = (num) => {
-        numbers[num] += 1
-    }
+    const a = ref(0);
+    const b = ref(0)
+    const history = ref([])
 
     const increment = () => {
         count.value += 1
@@ -37,11 +34,11 @@ export default {
 
     // computed as an option API
 
-    const total = computed(() => {
-       return count.value + numbers.a + numbers.b
-    })
+    // const total = computed(() => {
+    //    return count.value + numbers.a + numbers.b
+    // })
 
-    // // when any of the values changes
+    // // when any of the values changes perform a side effect
     //
     // watch(numbers, (newVal) => {
     //     console.log(newVal.a, newVal.b)
@@ -50,19 +47,30 @@ export default {
     //     immediate: true
     // })
 
-    // Vue will figure out what object to watch
+    // // Vue will figure out what object to watch
+    //
+    // watchEffect(() => {
+    //     console.log(numbers.a)
+    // })
 
-    watchEffect(() => {
-        console.log(numbers.a)
+    watch([a, b], ([newA, newB], [oldA, oldB]) => {
+        console.log(oldA, oldB)
+        console.log(newA, newB)
+        if (newA !== oldA) {
+          history.value.push(`a: ${oldA} -> ${newA}`)
+        }
+        if (newB !== oldB) {
+            history.value.push(`b: ${newB} -> ${oldB}`)
+        }
     })
 
     return {
         count,
         increment,
         decrement,
-        increase,
-        numbers,
-        total
+        a,
+        b,
+        history
     }
   }
 }
