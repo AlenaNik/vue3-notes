@@ -15,9 +15,14 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 
 export default {
+
+  mounted() {
+    console.log('mounted')
+  },
+
   setup() {
     // for a single value / number
     const count = ref(0)
@@ -53,6 +58,10 @@ export default {
     //     console.log(numbers.a)
     // })
 
+    onMounted(() => {
+      console.log('Mounted!!')
+    })
+
     watch([a, b], ([newA, newB], [oldA, oldB]) => {
         console.log(oldA, oldB)
         console.log(newA, newB)
@@ -63,6 +72,7 @@ export default {
             history.value.push(`b: ${newB} -> ${oldB}`)
         }
     })
+
 
     return {
         count,
