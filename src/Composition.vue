@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue';
+import { useNumbers } from "./numbers";
 
 export default {
 
@@ -24,55 +24,7 @@ export default {
   },
 
   setup() {
-    // for a single value / number
-    const count = ref(0)
-    const a = ref(0);
-    const b = ref(0)
-    const history = ref([])
-
-    const increment = () => {
-        count.value += 1
-    }
-    const decrement = () => {
-        count.value -= 1
-    }
-
-    // computed as an option API
-
-    // const total = computed(() => {
-    //    return count.value + numbers.a + numbers.b
-    // })
-
-    // // when any of the values changes perform a side effect
-    //
-    // watch(numbers, (newVal) => {
-    //     console.log(newVal.a, newVal.b)
-    // }, {
-    //     // the flag that would call if one more time
-    //     immediate: true
-    // })
-
-    // // Vue will figure out what object to watch
-    //
-    // watchEffect(() => {
-    //     console.log(numbers.a)
-    // })
-
-    onMounted(() => {
-      console.log('Mounted!!')
-    })
-
-    watch([a, b], ([newA, newB], [oldA, oldB]) => {
-        console.log(oldA, oldB)
-        console.log(newA, newB)
-        if (newA !== oldA) {
-          history.value.push(`a: ${oldA} -> ${newA}`)
-        }
-        if (newB !== oldB) {
-            history.value.push(`b: ${newB} -> ${oldB}`)
-        }
-    })
-
+    const { count, increment, decrement, a, b, history } = useNumbers();
 
     return {
         count,
