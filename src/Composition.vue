@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 
 export default {
   setup() {
@@ -35,8 +35,14 @@ export default {
         count.value -= 1
     }
 
+    // computed as an option API
+
     const total = computed(() => {
        return count.value + numbers.a + numbers.b
+    })
+
+    watch(numbers, (newVal) => {
+        console.log(newVal.a, newVal.b)
     })
 
     return {
